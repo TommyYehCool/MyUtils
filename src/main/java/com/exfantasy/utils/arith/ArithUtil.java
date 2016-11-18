@@ -1,4 +1,4 @@
-package com.exfantasy.utils;
+package com.exfantasy.utils.arith;
 
 import java.math.BigDecimal;
 
