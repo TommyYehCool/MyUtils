@@ -26,7 +26,7 @@ public class HttpUtil {
 			HttpResponse response = client.execute(get);
 			
 			int httpStatusCode = response.getStatusLine().getStatusCode();
-			if (httpStatusCode != HttpStatus.SC_OK) {
+			if (httpStatusCode / 100 != 2) {
 				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode);
 			}
 			
@@ -57,7 +57,7 @@ public class HttpUtil {
 			HttpResponse response = client.execute(post);
 			
 			int httpStatusCode = response.getStatusLine().getStatusCode();
-			if (httpStatusCode != HttpStatus.SC_OK) {
+			if (httpStatusCode / 100 != 2) {
 				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode);
 			}
 			
@@ -86,7 +86,7 @@ public class HttpUtil {
 	
 			HttpResponse response = client.execute(post);
 			int httpStatusCode = response.getStatusLine().getStatusCode();
-			if (httpStatusCode != HttpStatus.SC_OK) {
+			if (httpStatusCode / 100 != 2 || httpStatusCode != 302) {
 				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode);
 			}
 			
