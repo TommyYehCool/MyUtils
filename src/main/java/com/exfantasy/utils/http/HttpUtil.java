@@ -86,7 +86,7 @@ public class HttpUtil {
 	
 			HttpResponse response = client.execute(post);
 			int httpStatusCode = response.getStatusLine().getStatusCode();
-			if (httpStatusCode / 100 != 2 || httpStatusCode != 302) {
+			if (httpStatusCode / 100 != 2 && httpStatusCode != 302) {
 				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode);
 			}
 			
