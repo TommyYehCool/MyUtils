@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,10 @@ public class HttpUtil {
 	
 	private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
 	
-	private static HttpClient client = HttpClientBuilder.create().build();
+	// http://stackoverflow.com/questions/5169468/handling-httpclient-redirects
+	private final static HttpClient client 
+		= HttpClientBuilder.create()
+			.setRedirectStrategy(new LaxRedirectStrategy()).build();
 	
 	public static String sendGetRequest(String url) throws HttpUtilException {
 		try {
