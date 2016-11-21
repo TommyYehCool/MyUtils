@@ -88,7 +88,6 @@ public class HttpUtil {
 	
 	public static String sendPostRequest(String url, List<NameValuePair> params) throws HttpUtilException {
 		try {
-			HttpClient client = HttpClientBuilder.create().build();
 			HttpPost post = new HttpPost(url);
 	
 			post.setEntity(new UrlEncodedFormEntity(params));
