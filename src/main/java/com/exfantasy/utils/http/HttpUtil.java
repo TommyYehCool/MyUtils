@@ -58,7 +58,7 @@ public class HttpUtil {
 		try {
 			HttpPost post = new HttpPost(url);
 			
-			StringEntity input = new StringEntity(jsonData);
+			StringEntity input = new StringEntity(jsonData, "UTF-8");
 			input.setContentType("application/json");
 			post.setEntity(input);
 			
