@@ -2,6 +2,8 @@ package com.exfantasy.utils.tools;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -143,6 +145,37 @@ public class ReceiptLotteryNoUtil {
 		}
 		Document doc = connection.get();
 		return doc;
+	}
+	
+	public static String getSection(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH) + 1;
+		
+		String section = String.valueOf(year) + "_";
+		int divide = (month + 1) / 2;
+		switch (divide) {
+			case 1:
+				section += "01-02";
+				break;
+			case 2:
+				section += "03-04";
+				break;
+			case 3:
+				section += "05-06";
+				break;
+			case 4:
+				section += "07-08";
+				break;
+			case 5:
+				section += "09-10";
+				break;
+			case 6:
+				section += "11-12";
+				break;
+		}
+		return section;
 	}
 	
 	public static void main(String[] args) {
