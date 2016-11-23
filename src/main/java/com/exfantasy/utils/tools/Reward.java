@@ -1,12 +1,9 @@
 package com.exfantasy.utils.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Reward {
 	private String section;
 	private RewardType rewardType;
-	private List<String> nos;
+	private String no;
 
 	public String getSection() {
 		return section;
@@ -24,22 +21,20 @@ public class Reward {
 		this.rewardType = rewardType;
 	}
 
-	public List<String> getNos() {
-		return nos;
+	public String getNo() {
+		return no;
 	}
 
-	public void addNo(String no) {
-		if (nos == null) {
-			nos = new ArrayList<>();
-		}
-		nos.add(no);
+	public void setNo(String no) {
+		this.no = no;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Reward [section=").append(section).append(", rewardType=").append(rewardType).append(", nos=")
-				.append(nos).append("]");
+		builder.append("Reward [section=").append(section).append(", rewardType=").append(rewardType).append(", no=")
+				.append(no).append("]");
 		return builder.toString();
 	}
+	
 }

@@ -10,11 +10,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ReceiptLotteryNoUtil {
-	private final static int RETRY_TIMES = 5;
-	
-	private final static long RETRY_INTERVAL_IN_SECS = 5 * 1000;
+	private static Logger logger = LoggerFactory.getLogger(ReceiptLotteryNoUtil.class);
 	
 	private final static String CONNECTION_USER_AGENT = "Mozilla/5.0";
 	
@@ -37,7 +37,7 @@ public class ReceiptLotteryNoUtil {
 			
 			Document doc = getDocument(URL);
 			
-			System.out.println(">>>>> " + WEB_SITE_NAME + " [" + URL + "], 取得 Document, time-spent: " + (System.currentTimeMillis() - startTime) + " ms");
+			logger.info(">>>>> " + WEB_SITE_NAME + " [" + URL + "], 取得 Document, time-spent: " + (System.currentTimeMillis() - startTime) + " ms");
 			
 			startTime = System.currentTimeMillis();
 			
@@ -48,7 +48,7 @@ public class ReceiptLotteryNoUtil {
 			List<Element> divAreas = getDivAreas(divNumber);
 			List<Reward> rewards = getRewardNo(divAreas);
 			
-			System.out.println(">>>>> " + WEB_SITE_NAME + " [" + URL + "], 取得中獎號碼, time-spent: " + (System.currentTimeMillis() - startTime) + " ms");
+			logger.info(">>>>> " + WEB_SITE_NAME + " [" + URL + "], 取得中獎號碼, time-spent: " + (System.currentTimeMillis() - startTime) + " ms");
 			
 			return rewards;
 		} catch (IOException e) {
@@ -81,6 +81,7 @@ public class ReceiptLotteryNoUtil {
 		
 		for (Element divArea : divAreas) {
 			String section = divArea.select("h2:contains(年)").first().text();
+			section = convertSectionContent(section);
 
 			Elements trs = divArea.select("table > tbody > tr");
 			for (Element tr : trs) {
@@ -90,20 +91,20 @@ public class ReceiptLotteryNoUtil {
 					String rewardNo = tr.select("td > span").text();
 					if (rewardType == RewardType.THIRD_REWARD || rewardType == RewardType.SPECIAL_SIX) {
 						if (rewardNo.contains("、")) {
-							Reward reward = new Reward();
-							reward.setSection(section);
-							reward.setRewardType(rewardType);
 							String[] rewardNos = rewardNo.split("、");
 							for (String no : rewardNos) {
-								reward.addNo(no);
+								Reward reward = new Reward();
+								reward.setSection(section);
+								reward.setRewardType(rewardType);
+								reward.setNo(no);
+								rewards.add(reward);
 							}
-							rewards.add(reward);
 						}
 						else {
 							Reward reward = new Reward();
 							reward.setSection(section);
 							reward.setRewardType(rewardType);
-							reward.addNo(rewardNo);
+							reward.setNo(rewardNo);
 							rewards.add(reward);
 						}
 					}
@@ -111,7 +112,7 @@ public class ReceiptLotteryNoUtil {
 						Reward reward = new Reward();
 						reward.setSection(section);
 						reward.setRewardType(rewardType);
-						reward.addNo(rewardNo);
+						reward.setNo(rewardNo);
 						rewards.add(reward);
 					}
 				}
@@ -122,6 +123,15 @@ public class ReceiptLotteryNoUtil {
 
 	private static Document getDocument(String url) throws IOException {
 		return getDocument(url, null);
+	}
+	
+	private static String convertSectionContent(String section) {
+		String[] splitByYear = section.split("年");
+		int chineseYear = Integer.parseInt(splitByYear[0]);
+		String year = String.valueOf(chineseYear + 1911);
+		String months = splitByYear[1].substring(0, splitByYear[1].length() - 1);
+		
+		return year + "_" + months;
 	}
 	
 	private static Document getDocument(String url, Map<String, String> cookie) throws IOException {
