@@ -178,6 +178,66 @@ public class ReceiptLotteryNoUtil {
 		return section;
 	}
 	
+	public static Bingo checkIsBingo(String lotteryNo, List<Reward> rewards) {
+		Bingo bingo = new Bingo(lotteryNo);
+		for (Reward reward : rewards) {
+			RewardType rewardType = reward.getRewardType();
+			String number = reward.getNo();
+			
+			switch (rewardType) {
+				// 特別獎
+				case FIRST_REWARD:
+					// 號碼完全相同
+					if (lotteryNo.equals(number)) {
+						bingo.setBingo(true);
+						bingo.setPrize(10000000L);
+						return bingo;
+					}
+					break;
+
+				// 特獎
+				case SEONCD_REWARD:
+					// 號碼完全相同
+					if (lotteryNo.equals(number)) {
+						bingo.setBingo(true);
+						bingo.setPrize(2000000L);
+						return bingo;
+					}
+					break;
+
+				// 頭獎
+				case THIRD_REWARD:
+					// 號碼完全相同
+					if (lotteryNo.equals(number)) {
+						bingo.setBingo(true);
+						bingo.setPrize(200000L);
+						return bingo;
+					}
+					else {
+						String last3OfLotteryNo = lotteryNo.substring(lotteryNo.length() - 3, lotteryNo.length());
+						String last3OfRewardNo = number.substring(number.length() - 3, number.length());
+						if (last3OfLotteryNo.equals(last3OfRewardNo)) {
+							bingo.setBingo(true);
+							bingo.setPrize(200L);
+							return bingo;
+						}
+					}
+					break;
+
+				// 增開六獎
+				case SPECIAL_SIX:
+					String last3OfLotteryNo = lotteryNo.substring(lotteryNo.length() - 3, lotteryNo.length());
+					if (last3OfLotteryNo.equals(number)) {
+						bingo.setBingo(true);
+						bingo.setPrize(200L);
+						return bingo;
+					}
+					break;
+			}
+		}
+		return bingo;
+	}
+	
 	public static void main(String[] args) {
 		start();
 	}
