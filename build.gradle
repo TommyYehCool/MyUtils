@@ -13,13 +13,11 @@ repositories {
 ext {
 	slf4jVersion = '1.7.21'
 	httpClientVersion = '4.5.2'
-	gsonVersion = '2.8.0'
 }
 
 dependencies {
 	compile "org.slf4j:slf4j-api:${slf4jVersion}"
 	compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
-	compile "com.google.code.gson:gson:${gsonVersion}"
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
