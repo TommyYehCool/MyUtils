@@ -1,0 +1,10 @@
+1. https://jitpack.io
+
+2. 放到 GitHub 的 project 要 release 才能讓人家抓
+
+3. 要引用的 project 要加上
+
+	repositories {
+    	jcenter()
+    	maven { url "https://jitpack.io" }
+	}
