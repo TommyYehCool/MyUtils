@@ -35,7 +35,7 @@ public class HttpUtil {
 			int httpStatusCode = response.getStatusLine().getStatusCode();
 			if (httpStatusCode / 100 != 2) {
 				logger.warn("Send GET request to url: <{}> get http status code: <{}>", url, httpStatusCode);
-				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode);
+				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode);
 			}
 			
 			BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
@@ -50,7 +50,8 @@ public class HttpUtil {
 			logger.debug("Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
 			return responseData;
 		} catch (IOException e) {
-			throw new HttpUtilException("IOException raised while sending HTTP GET request to url: " + url, e);
+			throw new HttpUtilException(
+				"IOException raised while sending HTTP GET request to url: " + url, e, HttpUtilException.COMMUNICATE_ERROR);
 		}
 	}
 	
@@ -67,7 +68,7 @@ public class HttpUtil {
 			int httpStatusCode = response.getStatusLine().getStatusCode();
 			if (httpStatusCode / 100 != 2) {
 				logger.warn("Send Json POST request to url: <{}> get http status code: <{}>", url, httpStatusCode);
-				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode);
+				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode);
 			}
 			
 			BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
@@ -82,7 +83,8 @@ public class HttpUtil {
 			logger.debug("Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
 			return responseData;
 		} catch (IOException e) {
-			throw new HttpUtilException("IOException raised while sending HTTP JSON POST request to url: " + url, e);
+			throw new HttpUtilException(
+				"IOException raised while sending HTTP JSON POST request to url: " + url, e, HttpUtilException.COMMUNICATE_ERROR);
 		}
 	}
 	
@@ -96,7 +98,7 @@ public class HttpUtil {
 			int httpStatusCode = response.getStatusLine().getStatusCode();
 			if (httpStatusCode / 100 != 2 && httpStatusCode != 302) {
 				logger.warn("Send Json POST request to url: <{}> get http status code: <{}>", url, httpStatusCode);
-				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode);
+				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode);
 			}
 			
 			BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -111,7 +113,8 @@ public class HttpUtil {
 			logger.debug("Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
 			return responseData;
 		} catch (IOException e) {
-			throw new HttpUtilException("IOException raised while sending HTTP JSON POST request to url: " + url, e);
+			throw new HttpUtilException(
+				"IOException raised while sending HTTP JSON POST request to url: " + url, e, HttpUtilException.COMMUNICATE_ERROR);
 		}
 	}
 }
