@@ -30,11 +30,15 @@ public class HttpUtil {
 		try {
 			HttpGet get = new HttpGet(url);
 			
+			if (logger.isDebugEnabled()) {
+				logger.debug(">>>>> Send GET request to url: <{}>", url);
+			}
+			
 			HttpResponse response = client.execute(get);
 			
 			int httpStatusCode = response.getStatusLine().getStatusCode();
 			if (httpStatusCode / 100 != 2) {
-				logger.warn("Send GET request to url: <{}> get http status code: <{}>", url, httpStatusCode);
+				logger.warn("<<<<< Send GET request to url: <{}> got http status code: <{}>", url, httpStatusCode);
 				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode);
 			}
 			
@@ -47,7 +51,9 @@ public class HttpUtil {
 			}
 			String responseData = result.toString();
 			
-			logger.debug("Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
+			if (logger.isDebugEnabled()) {
+				logger.debug("<<<<< Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
+			}
 			return responseData;
 		} catch (IOException e) {
 			throw new HttpUtilException(
@@ -63,11 +69,15 @@ public class HttpUtil {
 			input.setContentType("application/json");
 			post.setEntity(input);
 			
+			if (logger.isDebugEnabled()) {
+				logger.debug(">>>>> Send Json POST request to url: <{}>, json: <{}>", url, jsonData);
+			}
+			
 			HttpResponse response = client.execute(post);
 			
 			int httpStatusCode = response.getStatusLine().getStatusCode();
 			if (httpStatusCode / 100 != 2) {
-				logger.warn("Send Json POST request to url: <{}> get http status code: <{}>", url, httpStatusCode);
+				logger.warn("<<<<< Send Json POST request to url: <{}> got http status code: <{}>", url, httpStatusCode);
 				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode);
 			}
 			
@@ -80,7 +90,9 @@ public class HttpUtil {
 			}
 			String responseData = result.toString();
 			
-			logger.debug("Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
+			if (logger.isDebugEnabled()) {
+				logger.debug("<<<<< Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
+			}
 			return responseData;
 		} catch (IOException e) {
 			throw new HttpUtilException(
@@ -93,11 +105,15 @@ public class HttpUtil {
 			HttpPost post = new HttpPost(url);
 	
 			post.setEntity(new UrlEncodedFormEntity(params));
+			
+			if (logger.isDebugEnabled()) {
+				logger.debug(">>>>> Send POST request to url: <{}>, data: <{}>", url, getLogString(params));
+			}
 	
 			HttpResponse response = client.execute(post);
 			int httpStatusCode = response.getStatusLine().getStatusCode();
 			if (httpStatusCode / 100 != 2 && httpStatusCode != 302) {
-				logger.warn("Send Json POST request to url: <{}> get http status code: <{}>", url, httpStatusCode);
+				logger.warn("<<<<< Send POST request to url: <{}> got http status code: <{}>", url, httpStatusCode);
 				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode);
 			}
 			
@@ -110,11 +126,25 @@ public class HttpUtil {
 			}
 			String responseData = result.toString();
 			
-			logger.debug("Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
+			if (logger.isDebugEnabled()) {
+				logger.debug("<<<<< Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
+			}
 			return responseData;
 		} catch (IOException e) {
 			throw new HttpUtilException(
 				"IOException raised while sending HTTP JSON POST request to url: " + url, e, HttpUtilException.COMMUNICATE_ERROR);
 		}
+	}
+
+	private static String getLogString(List<NameValuePair> params) {
+		StringBuilder buffer = new StringBuilder();
+		for (int i = 0; i < params.size(); i++) {
+			NameValuePair param = params.get(i);
+			buffer.append(param.getName()).append(":").append(param.getValue());
+			if (i != params.size() - 1) {
+				buffer.append(",");
+			}
+		}
+		return buffer.toString();
 	}
 }
