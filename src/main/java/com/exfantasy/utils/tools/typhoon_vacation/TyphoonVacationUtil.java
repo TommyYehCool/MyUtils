@@ -28,7 +28,7 @@ public class TyphoonVacationUtil {
 		System.out.println(typhoonVacationInfos);
 	}
 
-	private static List<TyphoonVacationInfo> getTyphoonVactionInfo() {
+	public static List<TyphoonVacationInfo> getTyphoonVactionInfo() {
 		long startTime = 0;
 		try {
 			startTime = System.currentTimeMillis();
