@@ -14,12 +14,14 @@ ext {
 	slf4jVersion = '1.7.21'
 	httpClientVersion = '4.5.2'
 	jsoupVersion = '1.10.1'
+	jacksonVersion = '2.8.5'
 }
 
 dependencies {
 	compile "org.slf4j:slf4j-api:${slf4jVersion}"
 	compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
 	compile "org.jsoup:jsoup:${jsoupVersion}"
+	compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

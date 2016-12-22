@@ -3,9 +3,14 @@ package com.exfantasy.utils.tools.typhoon_vacation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 public class TyphoonVacationInfo {
 	private String region;
-	
+	/**
+	 * ref: http://stackoverflow.com/questions/10978748/jackson-deserialization-with-contained-arraylistt
+	 */
+	@JsonDeserialize(as = ArrayList.class, contentAs = CountiesInfo.class)
 	private List<CountiesInfo> countiesInfos;
 	
 	public String getRegion() {
