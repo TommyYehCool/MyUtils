@@ -36,25 +36,23 @@ public class ReceiptLotteryNoUtil {
 		long startTime = 0;
 		try {
 			startTime = System.currentTimeMillis();
-			
+			logger.info(">>>>> 嘗試到 " + WEB_SITE_NAME + " [" + URL + "] 取得 Document");
 			Document doc = getDocument(URL);
-			
-			logger.info(">>>>> " + WEB_SITE_NAME + " [" + URL + "], 取得 Document, time-spent: " + (System.currentTimeMillis() - startTime) + " ms");
+			logger.info("<<<<< 成功從 " + WEB_SITE_NAME + " [" + URL + "] 取得 Document, time-spent: " + (System.currentTimeMillis() - startTime) + " ms");
 			
 			startTime = System.currentTimeMillis();
-			
+			logger.info(">>>>> 嘗試從 " + WEB_SITE_NAME + " [" + URL + "] 取得中獎號碼");
 			Element divWrapper = doc.select("div.wrapper").first();
 			Element divMain = divWrapper.select("div.main").first();
 			Element divBlockRight = divMain.select("div.block_right").first();
 			Element divNumber = divBlockRight.select("div#number").first();
 			List<Element> divAreas = getDivAreas(divNumber);
 			List<Reward> rewards = getRewardNo(divAreas);
-			
-			logger.info(">>>>> " + WEB_SITE_NAME + " [" + URL + "], 取得中獎號碼, time-spent: " + (System.currentTimeMillis() - startTime) + " ms");
+			logger.info("<<<<< 成功從 " + WEB_SITE_NAME + " [" + URL + "] 取得中獎號碼, time-spent: " + (System.currentTimeMillis() - startTime) + " ms");
 			
 			return rewards;
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("<<<<< 從 " + WEB_SITE_NAME + " [" + URL + "] 取得中獎資訊, 發生錯誤", e);
 			return null;
 		}
 	}
