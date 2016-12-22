@@ -28,8 +28,12 @@ public class TyphoonVacationInfo {
 		countiesInfos.add(countiesInfo);
 	}
 	
-	public List<CountiesInfo> getCountiesInfo() {
-		return this.countiesInfos;
+	public List<CountiesInfo> getCountiesInfos() {
+		return countiesInfos;
+	}
+
+	public void setCountiesInfos(List<CountiesInfo> countiesInfos) {
+		this.countiesInfos = countiesInfos;
 	}
 
 	@Override
