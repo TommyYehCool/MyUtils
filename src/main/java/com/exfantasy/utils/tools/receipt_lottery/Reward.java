@@ -1,4 +1,4 @@
-package com.exfantasy.utils.tools;
+package com.exfantasy.utils.tools.receipt_lottery;
 
 public class Reward {
 	private String section;

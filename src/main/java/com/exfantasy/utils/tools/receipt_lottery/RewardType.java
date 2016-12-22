@@ -1,4 +1,4 @@
-package com.exfantasy.utils.tools;
+package com.exfantasy.utils.tools.receipt_lottery;
 
 public enum RewardType {
 	FIRST_REWARD(1, "特別獎"),

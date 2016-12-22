@@ -1,4 +1,4 @@
-package com.exfantasy.utils.tools;
+package com.exfantasy.utils.tools.receipt_lottery;
 
 import java.io.IOException;
 import java.util.ArrayList;
