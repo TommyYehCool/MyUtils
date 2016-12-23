@@ -1,8 +1,7 @@
 package com.exfantasy.utils.http;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -11,9 +10,11 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,17 +40,10 @@ public class HttpUtil {
 			int httpStatusCode = response.getStatusLine().getStatusCode();
 			if (httpStatusCode / 100 != 2) {
 				logger.warn("<<<<< Send GET request to url: <{}> got http status code: <{}>", url, httpStatusCode);
-				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode);
+				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode, HttpUtilException.UNKNOWN_ERROR);
 			}
 			
-			BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-
-			StringBuffer result = new StringBuffer();
-			String line;
-			while ((line = br.readLine()) != null) {
-				result.append(line);
-			}
-			String responseData = result.toString();
+			String responseData = EntityUtils.toString(response.getEntity());
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("<<<<< Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
@@ -78,17 +72,10 @@ public class HttpUtil {
 			int httpStatusCode = response.getStatusLine().getStatusCode();
 			if (httpStatusCode / 100 != 2) {
 				logger.warn("<<<<< Send Json POST request to url: <{}> got http status code: <{}>", url, httpStatusCode);
-				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode);
+				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode, HttpUtilException.UNKNOWN_ERROR);
 			}
 			
-			BufferedReader br = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
-
-			StringBuffer result = new StringBuffer();
-			String line;
-			while ((line = br.readLine()) != null) {
-				result.append(line);
-			}
-			String responseData = result.toString();
+			String responseData = EntityUtils.toString(response.getEntity());
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("<<<<< Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
@@ -109,22 +96,26 @@ public class HttpUtil {
 			if (logger.isDebugEnabled()) {
 				logger.debug(">>>>> Send POST request to url: <{}>, data: <{}>", url, getLogString(params));
 			}
-	
-			HttpResponse response = client.execute(post);
+			
+			HttpClientContext context = HttpClientContext.create();
+			
+			HttpResponse response = client.execute(post, context);
 			int httpStatusCode = response.getStatusLine().getStatusCode();
-			if (httpStatusCode / 100 != 2 && httpStatusCode != 302) {
+			if (httpStatusCode / 100 != 2) {
 				logger.warn("<<<<< Send POST request to url: <{}> got http status code: <{}>", url, httpStatusCode);
-				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode);
+				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode, HttpUtilException.UNKNOWN_ERROR);
 			}
 			
-			BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-	
-			StringBuffer result = new StringBuffer();
-			String line;
-			while ((line = br.readLine()) != null) {
-				result.append(line);
+			List<URI> redirectURIs = context.getRedirectLocations();
+			if (redirectURIs != null && !redirectURIs.isEmpty()) {
+				URI redirectURI = redirectURIs.get(0);
+				String parameter = redirectURI.getQuery();
+				if (parameter.contains("error")) {
+					throw new HttpUtilException("<<<<< Login failed got error parameter: " + parameter, httpStatusCode, HttpUtilException.LOGIN_FAILED);
+				}
 			}
-			String responseData = result.toString();
+			
+			String responseData = EntityUtils.toString(response.getEntity());
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("<<<<< Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);

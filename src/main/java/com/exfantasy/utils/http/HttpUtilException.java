@@ -1,7 +1,5 @@
 package com.exfantasy.utils.http;
 
-import org.apache.http.HttpStatus;
-
 public class HttpUtilException extends Exception {
 	private static final long serialVersionUID = -6241667447139322373L;
 	
@@ -15,24 +13,23 @@ public class HttpUtilException extends Exception {
 	public HttpUtilException() {
 	}
 
-	public HttpUtilException(String message, int httpStatusCode) {
+	public HttpUtilException(String message, int httpStatusCode, int errorCode) {
 		super(message);
 		this.httpStatusCode = httpStatusCode;
-		if (httpStatusCode == HttpStatus.SC_FORBIDDEN) {
-			this.errorCode = LOGIN_FAILED;
-		}
-		else {
-			this.errorCode = UNKNOWN_ERROR;
-		}
+		this.errorCode = errorCode;
+	}
+	
+	public HttpUtilException(String message, Throwable cause, int errorCode) {
+		super(message, cause);
+		this.errorCode = errorCode;
 	}
 
 	public HttpUtilException(Throwable cause) {
 		super(cause);
 	}
 
-	public HttpUtilException(String message, Throwable cause, int errorCode) {
+	public HttpUtilException(String message, Throwable cause) {
 		super(message, cause);
-		this.errorCode = errorCode;
 	}
 
 	public HttpUtilException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
