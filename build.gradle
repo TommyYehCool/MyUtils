@@ -15,6 +15,7 @@ ext {
 	httpClientVersion = '4.5.2'
 	jsoupVersion = '1.10.1'
 	jacksonVersion = '2.8.5'
+	junitVersion = '4.+'
 }
 
 dependencies {
@@ -22,6 +23,7 @@ dependencies {
 	compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
 	compile "org.jsoup:jsoup:${jsoupVersion}"
 	compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    testCompile "junit:junit:${junitVersion}"
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
