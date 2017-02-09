@@ -2,6 +2,7 @@ package com.exfantasy.utils.http;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -43,7 +44,7 @@ public class HttpUtil {
 				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode, HttpUtilException.UNKNOWN_ERROR);
 			}
 			
-			String responseData = EntityUtils.toString(response.getEntity());
+			String responseData = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("<<<<< Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
@@ -75,7 +76,7 @@ public class HttpUtil {
 				throw new HttpUtilException("Failed - HTTP error code: " + httpStatusCode, httpStatusCode, HttpUtilException.UNKNOWN_ERROR);
 			}
 			
-			String responseData = EntityUtils.toString(response.getEntity());
+			String responseData = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("<<<<< Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
@@ -115,7 +116,7 @@ public class HttpUtil {
 				}
 			}
 			
-			String responseData = EntityUtils.toString(response.getEntity());
+			String responseData = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("<<<<< Got response succeed with http status code: <{}>, response:{}", httpStatusCode, responseData);
