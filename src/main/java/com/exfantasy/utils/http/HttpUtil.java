@@ -111,8 +111,8 @@ public class HttpUtil {
 			if (redirectURIs != null && !redirectURIs.isEmpty()) {
 				URI redirectURI = redirectURIs.get(0);
 				String parameter = redirectURI.getQuery();
-				if (parameter != null && parameter.contains("error")) {
-					throw new HttpUtilException("<<<<< Login failed got error parameter: " + parameter, httpStatusCode, HttpUtilException.LOGIN_FAILED);
+				if (parameter != null && parameter.contains("login_failed")) {
+					throw new HttpUtilException("<<<<< Login failed got parameter: " + parameter, httpStatusCode, HttpUtilException.LOGIN_FAILED);
 				}
 			}
 			
