@@ -212,6 +212,43 @@ public class ReceiptLotteryNoUtil {
 						return bingo;
 					}
 					else {
+						// 最後7碼: 40000
+						String last7OfLotteryNo = lotteryNo.substring(lotteryNo.length() - 7, lotteryNo.length());
+						String last7OfRewardNo = number.substring(number.length() - 7, number.length());
+						if (last7OfLotteryNo.equals(last7OfRewardNo)) {
+							bingo.setBingo(true);
+							bingo.setPrize(40000L);
+							return bingo;
+						}
+						
+						// 最後6碼: 10000
+						String last6OfLotteryNo = lotteryNo.substring(lotteryNo.length() - 6, lotteryNo.length());
+						String last6OfRewardNo = number.substring(number.length() - 6, number.length());
+						if (last6OfLotteryNo.equals(last6OfRewardNo)) {
+							bingo.setBingo(true);
+							bingo.setPrize(10000L);
+							return bingo;
+						}
+						
+						// 最後5碼: 4000
+						String last5OfLotteryNo = lotteryNo.substring(lotteryNo.length() - 5, lotteryNo.length());
+						String last5OfRewardNo = number.substring(number.length() - 5, number.length());
+						if (last5OfLotteryNo.equals(last5OfRewardNo)) {
+							bingo.setBingo(true);
+							bingo.setPrize(10000L);
+							return bingo;
+						}
+						
+						// 最後4碼: 1000
+						String last4OfLotteryNo = lotteryNo.substring(lotteryNo.length() - 4, lotteryNo.length());
+						String last4OfRewardNo = number.substring(number.length() - 4, number.length());
+						if (last4OfLotteryNo.equals(last4OfRewardNo)) {
+							bingo.setBingo(true);
+							bingo.setPrize(10000L);
+							return bingo;
+						}
+						
+						// 最後3碼: 200
 						String last3OfLotteryNo = lotteryNo.substring(lotteryNo.length() - 3, lotteryNo.length());
 						String last3OfRewardNo = number.substring(number.length() - 3, number.length());
 						if (last3OfLotteryNo.equals(last3OfRewardNo)) {
