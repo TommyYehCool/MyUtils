@@ -13,6 +13,7 @@ repositories {
 ext {
 	slf4jVersion = '1.7.21'
 	httpClientVersion = '4.5.2'
+	apacheCommonsLang3Version = '3.+'
 	jsoupVersion = '1.10.1'
 	jacksonVersion = '2.8.5'
 	junitVersion = '4.+'
@@ -21,6 +22,7 @@ ext {
 dependencies {
 	compile "org.slf4j:slf4j-api:${slf4jVersion}"
 	compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
+	compile "org.apache.commons:commons-lang3:${apacheCommonsLang3Version}"
 	compile "org.jsoup:jsoup:${jsoupVersion}"
 	compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     testCompile "junit:junit:${junitVersion}"
